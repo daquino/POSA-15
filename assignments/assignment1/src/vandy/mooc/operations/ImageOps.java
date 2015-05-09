@@ -262,17 +262,19 @@ public class ImageOps {
             // Initialize state for the next run.
             resetNonViewFields();
 	
-            // Create an Activity for displaying the images.
-            final Intent intent =
-                DisplayImagesActivity.makeIntent
-                (mDirectoryPathname);
+            if(Utils.directoryExists(mDirectoryPathname)) {
+                // Create an Activity for displaying the images.
+                final Intent intent =
+                        DisplayImagesActivity.makeIntent
+                                (mDirectoryPathname);
 
-            Log.d(TAG,
-                  "starting DisplayImageActivity at "
-                  + mDirectoryPathname);
+                Log.d(TAG,
+                        "starting DisplayImageActivity at "
+                                + mDirectoryPathname);
 
-            // Launch Activity to display the results.
-            mActivity.get().startActivity(intent);
+                // Launch Activity to display the results.
+                mActivity.get().startActivity(intent);
+            }
         }
     }  
 

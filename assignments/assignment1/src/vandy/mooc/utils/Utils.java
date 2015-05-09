@@ -388,6 +388,11 @@ public class Utils {
         mgr.hideSoftInputFromWindow(windowToken,
                                     0);
     }
+	
+    public static boolean directoryExists(String path) {
+        File directory = new File(path);
+        return directory.isDirectory();
+    }
 
     /**
      * Ensure this class is only used as a utility.
