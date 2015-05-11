@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import vandy.mooc.R;
+import vandy.mooc.utils.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,12 +199,24 @@ public class DisplayImagesActivity extends LifecycleLoggingActivity {
             File[] bitmaps = new File(filterPath).listFiles();
             mBitmaps = new ArrayList<Bitmap>();
 
-            for (File bitmap : bitmaps){
-                if (bitmap != null) {
-                    mBitmaps.add
-                        (BitmapFactory.decodeFile(bitmap.getAbsolutePath()));
+            // If there are some image files to display, load, and
+            // store their bitmaps in the bitmap array.
+            if (bitmaps != null) {
+                for (File bitmap : bitmaps) {
+                    if (bitmap != null) {
+                        try {
+                            mBitmaps.add
+                                (BitmapFactory.decodeFile(bitmap.getAbsolutePath()));
+                        } catch (Exception | Error e) {
+                            Log.e(TAG,"Error displaying image:", e);
+                            Utils.showToast(DisplayImagesActivity.this,
+                                            "Error displaying image at "
+                                            + bitmap.getAbsolutePath());
+                        }
+                    }
                 }
             }
+
             notifyDataSetChanged();
         }
     }
