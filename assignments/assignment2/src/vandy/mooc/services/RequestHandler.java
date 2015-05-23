@@ -56,14 +56,14 @@ class RequestHandler extends Handler {
      * Messenger passed with the message.
      */
     public void handleMessage(Message message) {
-        // Convert the Message into a ReplyMessage.
+        // Convert the Message into a RequestMessage.
         final RequestMessage requestMessage =
             RequestMessage.makeRequestMessage(message);
 
         // Get the reply Messenger.
         // TODO -- you fill in here.
 
-        // Get the URL associated with the Intent data.
+        // Get the URL associated with the message data.
         // TODO -- you fill in here.
 
         // Get the directory pathname where the image will be stored.
