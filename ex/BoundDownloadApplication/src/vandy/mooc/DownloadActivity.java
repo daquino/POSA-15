@@ -21,7 +21,7 @@ import android.view.View;
  * Activity.  The AIDL interface object that's returned can then be
  * used to interact with the Service either synchronously or
  * asynchronously, depending on the type of AIDL interface requested.
- * 
+ *
  * Starting Bound Services to run synchronously in background Threads
  * from the asynchronous UI Thread is an example of the
  * Half-Sync/Half-Async Pattern.  Starting Bound Services using
@@ -29,7 +29,7 @@ import android.view.View;
  * patterns.  The DownloadActivity plays the role of the Creator and
  * creates a Command in the form of an Intent.  The Intent is received
  * by the Service process, which plays the role of the Executor.
- * 
+ *
  * The use of AIDL interfaces to pass information between two
  * different processes is an example of the Broker Pattern, in which
  * all communication-related functionality is encapsulated in the AIDL
@@ -45,7 +45,7 @@ public class DownloadActivity extends DownloadActivityBase {
      * connection to the Service.
      */
     DownloadCall mDownloadCall;
-     
+
     /**
      * The AIDL Interface that we will use to make oneway calls to the
      * DownloadServiceAsync Service.  This plays the role of Requestor
@@ -53,8 +53,8 @@ public class DownloadActivity extends DownloadActivityBase {
      * to the Service.
      */
     DownloadRequest mDownloadRequest;
-     
-    /** 
+
+    /**
      * This ServiceConnection is used to receive results after binding
      * to the DownloadServiceSync Service using bindService().
      */
@@ -85,8 +85,8 @@ public class DownloadActivity extends DownloadActivityBase {
                 mDownloadCall = null;
             }
         };
-     
-    /** 
+
+    /**
      * This ServiceConnection is used to receive results after binding
      * to the DownloadServiceAsync Service using bindService().
      */
@@ -116,12 +116,12 @@ public class DownloadActivity extends DownloadActivityBase {
                 mDownloadRequest = null;
             }
         };
-     
+
     /**
      * The implementation of the DownloadResults AIDL
      * Interface. Should be passed to the DownloadBoundServiceAsync
      * Service using the DownloadRequest.downloadImage() method.
-     * 
+     *
      * This implementation of DownloadResults.Stub plays the role of
      * Invoker in the Broker Pattern.
      */
@@ -146,7 +146,7 @@ public class DownloadActivity extends DownloadActivityBase {
                 runOnUiThread(displayRunnable);
             }
         };
-     
+
     /**
      * This method is called when a user presses a button(see
      * res/layout/activity_download.xml)
@@ -161,8 +161,8 @@ public class DownloadActivity extends DownloadActivityBase {
             if (mDownloadCall != null) {
                 Log.d(TAG,
                       "Calling twoway DownloadServiceSync.downloadImage()");
-                /** 
-                 * Define an AsyncTask instance to avoid blocking the UI Thread. 
+                /**
+                 * Define an AsyncTask instance to avoid blocking the UI Thread.
                  * */
 		new AsyncTask<Uri, Void, String>() {
                     /**
@@ -183,7 +183,7 @@ public class DownloadActivity extends DownloadActivityBase {
                      */
                     @Override
                     protected void onPostExecute(String result) {
-                        if (result != null) 
+                        if (result != null)
                             displayBitmap(result);
                     }
                 }.execute(uri);
@@ -215,19 +215,19 @@ public class DownloadActivity extends DownloadActivityBase {
     @Override
     public void onStart() {
     	super.onStart();
-    	
+
     	// Bind this activity to the DownloadBoundService* Services if
     	// they aren't already bound Use mBoundSync/mBoundAsync
-    	if(mDownloadCall == null) 
-            bindService(DownloadBoundServiceSync.makeIntent(this), 
-                        mServiceConnectionSync, 
+    	if(mDownloadCall == null)
+            bindService(DownloadBoundServiceSync.makeIntent(this),
+                        mServiceConnectionSync,
                         BIND_AUTO_CREATE);
     	if(mDownloadRequest == null)
-            bindService(DownloadBoundServiceAsync.makeIntent(this), 
-                        mServiceConnectionAsync, 
+            bindService(DownloadBoundServiceAsync.makeIntent(this),
+                        mServiceConnectionAsync,
                         BIND_AUTO_CREATE);
     }
-    
+
     /**
      * Hook method called when the DownloadActivity becomes completely
      * hidden to unbind the Activity from the Services.
@@ -235,37 +235,37 @@ public class DownloadActivity extends DownloadActivityBase {
     @Override
     public void onStop() {
     	super.onStop();
-    	
+
     	// Unbind the Sync/Async Services if they are bound. Use
     	// mBoundSync/mBoundAsync
-    	if(mDownloadCall != null) 
+    	if(mDownloadCall != null)
             unbindService(mServiceConnectionSync);
-    	if(mDownloadRequest != null) 
+    	if(mDownloadRequest != null)
             unbindService(mServiceConnectionAsync);
     }
-    
+
     // Public accessor method for testing purposes
     public DownloadCall getDownloadCall() {
     	return mDownloadCall;
     }
-    
+
     // Public accessor method for testing purposes
     public DownloadRequest getDownloadRequest() {
     	return mDownloadRequest;
     }
-    
+
     // Public accessor method for testing purposes
     public DownloadResults getDownloadResults() {
     	return mDownloadResults;
     }
-    
+
     // Public accessor method for testing purposes
     public boolean isBoundToSync() {
     	return mDownloadCall != null;
     }
-    
+
     // Public accessor method for testing purposes
     public boolean isBoundToAsync() {
     	return mDownloadRequest != null;
-    }     
+    }
 }
